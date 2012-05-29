@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DataTableProxy</id>
+    <version>1.0</version>
+    <title>$title$</title>
+    <authors>Tom Dietrich</authors>
+    <owners>Tom DIetrich</owners>    
+    <projectUrl>https://github.com/tdietrich513/DataTableProxy</projectUrl>    
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Converts IEnumerables into Datatables for easy binding.</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>Utility DataTable IEnumerable</tags>
+  </metadata>
+</package>
