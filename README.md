@@ -6,7 +6,7 @@ A quick utility class for converting IEnumerables into easily bindable DataTable
 Usage:
 ```csharp
 var dtp = new DataTableProxy<YourObject>();
-dtp.ColumnDefs.Add("ID", yo => yo.Id");
+dtp.ColumnDefs.Add("ID", yo => yo.Id);
 dtp.ColumnDefs.Add("Name", yo => yo.Name);
 dtp.ColumnDefs.Add("Last Date", yo => yo.Dates.Max());
 
