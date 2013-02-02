@@ -1,7 +1,7 @@
 DataTableProxy
 ==============
 
-A quick utility class for converting IEnumerables into easily bindable DataTables
+A quick utility class for converting IEnumerables into easily bindable DataTables. Available as a [NuGet Package][1]. 
 
 Usage:
 ```csharp
@@ -20,3 +20,16 @@ dataGridView1.DataSource = dtp.Table;
 Notes:
 DataTableProxy will intelligently discover the datatype for each column added based on the return type of the first non-null evaluation.
 DataTableProxy will call "ToString" on reference-type return values. 
+
+Licence Information
+===================
+Copyright (c) 2012 Tom Dietrich.
+All rights reserved.
+
+Redistribution and use in source and binary forms are permitted.
+
+THIS SOFTWARE IS PROVIDED ''AS IS'' AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+   [1]: http://nuget.org/packages/DataTableProxy/
