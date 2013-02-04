@@ -41,6 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTableProxy.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="FluentTableProxy.cs" />
+    <Compile Include="FluentTableProxyExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
