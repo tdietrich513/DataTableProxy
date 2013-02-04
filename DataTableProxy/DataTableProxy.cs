@@ -1,113 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
-using System.Reflection;
-using System.ComponentModel;
+using System.Linq;
 
 namespace DataTableProxy
 {
-	public class DataTableProxy<T>
-	{
-		public static Dictionary<string, Func<T, object>> EmptyColumnsList()
-		{
-			return new Dictionary<string, Func<T, object>>();
-		}
+    public class DataTableProxy<T>
+    {
+        public DataTableProxy()
+        {
+            Table = new DataTable("results");
+            ColumnDefs = EmptyColumnsList();
+        }
 
-		/// <summary>
-		/// Each item in this dictionary is the source for a column. The key is the column name, the predicate in the value will be executed on each member of the data source to provide a value for that column.
-		/// </summary>
-		public Dictionary<string, Func<T, object>> ColumnDefs { get; set; }
-		/// <summary>
-		/// The table that is built by FillTable- will be null until FillTable is called.
-		/// </summary>
-		public DataTable Table { get; private set; }
-		/// <summary>
-		/// Each member of the datasource will become a row for the table. 
-		/// </summary>
-		public IEnumerable<T> DataSource { get; set; }
+        public DataTableProxy(Dictionary<string, Func<T, object>> columns)
+        {
+            ColumnDefs = columns;
+        }
 
-		public DataTableProxy()
-		{
-			Table = new DataTable("results");
-			ColumnDefs = EmptyColumnsList();
-		}
+        public DataTableProxy(Dictionary<string, Func<T, object>> columns, IEnumerable<T> data)
+        {
+            ColumnDefs = columns;
+            DataSource = data;
+        }
 
-		public DataTableProxy(Dictionary<string, Func<T, object>> Columns)
-		{
-			ColumnDefs = Columns;
-		}
+        /// <summary>
+        /// Each item in this dictionary is the source for a column. The key is the column name, the predicate in the value will be executed on each member of the data source to provide a value for that column.
+        /// </summary>
+        public Dictionary<string, Func<T, object>> ColumnDefs { get; set; }
 
-		public DataTableProxy(Dictionary<string, Func<T, object>> Columns, IEnumerable<T> Data)
-		{
-			ColumnDefs = Columns;
-			DataSource = Data;
-		}
+        /// <summary>
+        /// The table that is built by FillTable- will be null until FillTable is called.
+        /// </summary>
+        public DataTable Table { get; private set; }
 
-		public void FillTable()
-		{
-			FillTable(false);
-		}
+        /// <summary>
+        /// Each member of the datasource will become a row for the table. 
+        /// </summary>
+        public IEnumerable<T> DataSource { get; set; }
 
-		public void FillTable(bool RemoveEmptyColumns)
-		{
+        public static Dictionary<string, Func<T, object>> EmptyColumnsList()
+        {
+            return new Dictionary<string, Func<T, object>>();
+        }
 
-			if (DataSource == null || ColumnDefs == null) return;
+        public void FillTable()
+        {
+            FillTable(false);
+        }
 
-			if (Table != null) Table.Dispose();
-			Table = new DataTable("results");
+        public void FillTable(bool removeEmptyColumns)
+        {
+            if (DataSource == null || ColumnDefs == null) return;
 
-			var ColumnNames = ColumnDefs.Keys.ToArray();
+            if (Table != null) Table.Dispose();
+            Table = new DataTable("results");
 
-			foreach (string Name in ColumnNames)
-			{
-				Table.Columns.Add(Name);
-			}
+            var columnNames = ColumnDefs.Keys.ToArray();
 
-			int i;
-			object[] values;
-			var ColumnValues = ColumnDefs.Values.ToArray();
-			var ColumnCount = ColumnDefs.Count;
-			List<int> UsedColumns = new List<int>();
+            foreach (var name in columnNames)
+            {
+                Table.Columns.Add(name);
+            }
 
-			var Data = new List<object[]>();
+            int i;
+            var columnValues = ColumnDefs.Values.ToArray();
+            var columnCount = ColumnDefs.Count;
+            var usedColumns = new List<int>();
 
-			foreach (T Item in this.DataSource)
-			{
-				i = 0;
-				values = new object[ColumnCount];
+            var data = new List<object[]>();
 
-				foreach (Func<T, object> Value in ColumnValues)
-				{
-					object CurrentValue = Value(Item);
-					if (CurrentValue != null && !CurrentValue.GetType().IsPrimitive && !CurrentValue.GetType().IsValueType) CurrentValue = CurrentValue.ToString();
-					values[i] = CurrentValue;
-					if (values[i] != null && !string.IsNullOrEmpty(values[i].ToString()))
-						if (!UsedColumns.Contains(i))
-						{
-							UsedColumns.Add(i);
-							Table.Columns[i].DataType = values[i].GetType();
-						}
-					i++;
-				}
-				Data.Add(values);
-			}
+            foreach (var item in DataSource)
+            {
+                i = 0;
+                var values = new object[columnCount];
 
-			foreach (object[] row in Data)
-				Table.Rows.Add(row);
+                foreach (var value in columnValues)
+                {
+                    var currentValue = value(item);
+                    if (currentValue != null && !currentValue.GetType().IsPrimitive &&
+                        !currentValue.GetType().IsValueType) currentValue = currentValue.ToString();
+                    values[i] = currentValue;
+                    if (values[i] != null && !string.IsNullOrEmpty(values[i].ToString()))
+                        if (!usedColumns.Contains(i))
+                        {
+                            usedColumns.Add(i);
+                            Table.Columns[i].DataType = values[i].GetType();
+                        }
+                    i++;
+                }
+                data.Add(values);
+            }
 
-			if (RemoveEmptyColumns)
-			{
-				var ColumnsToRemove = new List<DataColumn>();
+            foreach (var row in data)
+                Table.Rows.Add(row);
 
-				for (i = 0; i < ColumnCount; i++)
-					if (!UsedColumns.Contains(i)) ColumnsToRemove.Add(Table.Columns[i]);
+            if (removeEmptyColumns)
+            {
+                var columnsToRemove = new List<DataColumn>();
 
-				foreach (DataColumn dc in ColumnsToRemove)
-					Table.Columns.Remove(dc);
-			}
-		}
-	}
+                for (i = 0; i < columnCount; i++)
+                    if (!usedColumns.Contains(i)) columnsToRemove.Add(Table.Columns[i]);
+
+                foreach (var dc in columnsToRemove)
+                    Table.Columns.Remove(dc);
+            }
+        }
+    }
 }
-
