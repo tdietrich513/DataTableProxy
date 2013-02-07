@@ -22,7 +22,7 @@ Or use the new Fluent Syntax:
 dataGridView1.DataSource = YourObjectRepository.GetAll().ToTable()
    .WithColumn("ID", yo => yo.Id)
    .WithColumn("Name", yo => yo.Name)
-   .WithColumn("Last Date", yo => yo.Dates.Max()
+   .WithColumn("Last Date", yo => yo.Dates.Max())
    .GetResult();
 ```
 
