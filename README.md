@@ -17,6 +17,15 @@ dtp.FillTable();
 dataGridView1.DataSource = dtp.Table;
 ```
 
+Or use the new Fluent Syntax:
+```csharp
+dataGridView1.DataSource = YourObjectRepository.GetAll().ToTable()
+   .WithColumn("ID", yo => yo.Id)
+   .WithColumn("Name", yo => yo.Name)
+   .WithColumn("Last Date", yo => yo.Dates.Max()
+   .GetResult();;
+```
+
 Notes:
 DataTableProxy will intelligently discover the datatype for each column added based on the return type of the first non-null evaluation.
 DataTableProxy will call "ToString" on reference-type return values. 
