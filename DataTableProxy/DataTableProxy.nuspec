@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>DataTableProxy</id>
-    <version>1.1</version>
+    <version>1.2</version>
     <title>$title$</title>
     <authors>Tom Dietrich</authors>
-    <owners>Tom DIetrich</owners>    
-    <projectUrl>https://github.com/tdietrich513/DataTableProxy</projectUrl>    
+    <owners>Tom DIetrich</owners>
+    <projectUrl>https://github.com/tdietrich513/DataTableProxy</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Converts IEnumerables into Datatables for easy binding.</description>
-    <releaseNotes>Initial Release</releaseNotes>
+    <releaseNotes>Fluent Syntax, IEnumerable extensions and Reflection features.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Utility DataTable IEnumerable</tags>
   </metadata>
