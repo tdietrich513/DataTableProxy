@@ -5,7 +5,9 @@ using System.Linq;
 
 namespace DataTableProxy
 {
-    public class DataTableProxy<T>
+	using System.Reflection;
+
+	public class DataTableProxy<T>
     {
         public DataTableProxy()
         {
@@ -38,6 +40,17 @@ namespace DataTableProxy
         /// Each member of the datasource will become a row for the table. 
         /// </summary>
         public IEnumerable<T> DataSource { get; set; }
+
+		public void SetColumnsByReflection()
+		{
+			var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+			foreach (var prop in props)
+			{
+				var pi = prop;				
+				ColumnDefs.Add(pi.Name, t => pi.GetValue(t, null));				
+			}
+		}		
 
         public static Dictionary<string, Func<T, object>> EmptyColumnsList()
         {
