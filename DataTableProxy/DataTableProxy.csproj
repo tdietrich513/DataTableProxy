@@ -13,4 +13,13 @@
     <PackageReleaseNotes>Fluent Syntax, IEnumerable extensions and Reflection features.</PackageReleaseNotes>
     <PackageTags>Utility DataTable IEnumerable</PackageTags>
   </PropertyGroup>
+
+  <!-- SourceLink Support -->
+  <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+  </ItemGroup>
 </Project>
